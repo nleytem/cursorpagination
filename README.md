@@ -23,10 +23,16 @@ The test suite includes full end-to-end integration tests that spin up an epheme
 
 ### Run Locally
 The application automatically seeds 2,000 events from `seed_data.jsonl` on startup.
+Ensure that docker is running.
 ```bash
 ./mvnw spring-boot:run
 ```
+
 The API will be available at `http://localhost:8080`.
+
+#### Troubleshooting tip
+I experienced Docker on Windows being a little unstable when running this, so if the compose hangs or the aforementioned maven command fails, try to restart Docker.
+
 
 ---
 
