@@ -24,6 +24,8 @@ The test suite includes full end-to-end integration tests that spin up an epheme
 ### Run Locally
 The application automatically seeds 2,000 events from `seed_data.jsonl` on startup.
 
+This application exposes ports `5432` and `8080`, so those ports will need to be made available before running.
+
 Ensure that docker is running.
 ```bash
 ./mvnw spring-boot:run
