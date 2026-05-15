@@ -23,9 +23,15 @@ The test suite includes full end-to-end integration tests that spin up an epheme
 
 ### Run Locally
 The application automatically seeds 2,000 events from `seed_data.jsonl` on startup.
+
 Ensure that docker is running.
 ```bash
 ./mvnw spring-boot:run
+```
+OR
+```bash
+docker-compose up --build -d
+docker compose attach app
 ```
 
 The API will be available at `http://localhost:8080`.
