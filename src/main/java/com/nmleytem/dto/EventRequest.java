@@ -3,6 +3,7 @@ package com.nmleytem.dto;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Request DTO for the Events API.
@@ -25,6 +26,10 @@ public record EventRequest(
         String city,
         String tags
 ) {
+    private static final Set<String> VALID_CATEGORIES = Set.of(
+            "music", "tech", "food", "sports", "arts", "comedy", "wellness", "community"
+    );
+
     /**
      * Returns the decoded city filter.
      *
@@ -81,6 +86,7 @@ public record EventRequest(
     /**
      * Validates the request parameters.
      * Ensures startTime and endTime are provided and startTime <= endTime.
+     * Also validates that category (if provided) is a valid category.
      *
      * @throws IllegalArgumentException if validation fails
      */
@@ -90,6 +96,12 @@ public record EventRequest(
         }
         if (startTime > endTime) {
             throw new IllegalArgumentException("startTime must be before or equal to endTime");
+        }
+
+        String decodedCategory = category();
+        if (decodedCategory != null && !VALID_CATEGORIES.contains(decodedCategory)) {
+            throw new IllegalArgumentException("Invalid category: " + decodedCategory + 
+                    ". Allowed categories are: " + String.join(", ", VALID_CATEGORIES));
         }
     }
 }

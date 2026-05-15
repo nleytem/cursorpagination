@@ -142,6 +142,19 @@ class EventControllerIntegrationTest {
     }
 
     @Test
+    @DisplayName("Should return 400 for invalid category")
+    void shouldReturn400ForInvalidCategory() {
+        String url = getUrl("/events?startTime=0&endTime=2000000000&category=invalid_category");
+
+        try {
+            restTemplate.getForEntity(url, String.class);
+        } catch (org.springframework.web.client.HttpClientErrorException e) {
+            assertThat(e.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+            assertThat(e.getResponseBodyAsString()).contains("Invalid category");
+        }
+    }
+
+    @Test
     @DisplayName("Should return 400 for invalid cursor")
     void shouldReturn400ForInvalidCursor() {
         String url = getUrl("/events?startTime=0&endTime=2000000000&cursor=invalid_base64_or_json");

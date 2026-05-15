@@ -49,30 +49,29 @@ Retrieves a paginated list of events within a specific time range, with optional
 #### Response Shape
 ```json
 {
-  "events": [
-    {
-      "id": "evt-0001",
-      "start_time": 1722096000,
-      "end_time": 1722117600,
-      "title": "Painting Workshop...",
-      "description": "...",
-      "category": "arts",
-      "location": {
-        "venue": "House of Blues",
-        "city": "Boston",
-        "state": "MA"
-      },
-      "organizer": "Boston Arts",
-      "price_cents": 0,
-      "is_free": true,
-      "tags": ["painting", "crafts"]
-    }
-  ],
+  "events": [...],
   "pagination": {
     "next_cursor": "eyJzdGFydFRpbWUiOjE3MjIwOTYwMDAsImV2ZW50SWQiOiJldnQtMDAwMSJ9",
     "total_count": 2000
   }
 }
+```
+
+#### Example cURL Requests
+
+**Basic Pagination**
+```bash
+curl "http://localhost:8080/events?startTime=1700000000&endTime=1800000000&limit=5"
+```
+
+**Filtering by City (Handling spaces)**
+```bash
+curl "http://localhost:8080/events?startTime=1700000000&endTime=1800000000&city=New+York"
+```
+
+**Filtering by Multiple Tags**
+```bash
+curl "http://localhost:8080/events?startTime=1700000000&endTime=1800000000&tags=jazz,live-music"
 ```
 
 ### How to Paginate

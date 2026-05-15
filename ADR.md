@@ -14,6 +14,7 @@
 **Context**: The exercise explicitly forbids Hibernate/JPA to ensure correct keyset pagination SQL generation.
 **Decision**: Use Spring's `NamedParameterJdbcTemplate` for all database interactions.
 **Rationale**: Keyset pagination depends heavily on the specific shape of the `WHERE` and `ORDER BY` clauses. Using raw SQL allows full control over these clauses and ensures that indices are used effectively. It also makes it easier to use PostgreSQL-specific features like the array overlap operator (`&&`).
+ Additionally, Hikari is being used for connection pooling to boost performance.
 
 ## 4. Embedded PostgreSQL for Testing
 **Context**: Integration tests need a real database to verify complex SQL (like array overlaps and keyset logic), but requiring the user to have Docker running adds friction.
@@ -38,11 +39,13 @@
 **Context**: The API should return user-friendly errors for invalid inputs (e.g., malformed cursors).
 **Decision**: Implement a `@RestControllerAdvice` with a `GlobalExceptionHandler`.
 **Rationale**: This provides a centralized way to map internal exceptions (like `IllegalArgumentException`) to appropriate HTTP status codes (like `400 Bad Request`), ensuring a consistent API contract.
+**Future Consideration**: I would create a more robust model so errors had the same shape and were machine-readable and actionable. This implementation is more for informational or visibility purposes.
+
 
 ## 7. MDC-based Request Tracing
 **Context**: In a production environment, multiple requests are handled concurrently. Log messages from different requests become interleaved, making it difficult to trace the lifecycle of a single request.
 **Decision**: Implement a `OncePerRequestFilter` that generates a unique `requestId` (UUID) for every incoming request and stores it in the SLF4J Mapped Diagnostic Context (MDC).
-**Rationale**: By including `%X{requestId}` in the logging pattern, all log messages generated during the execution of a request—from the controller to the service and repository layers—are tagged with the same ID. This significantly improves observability and simplifies debugging and log aggregation.
+**Rationale**: By including `%X{requestId}` in the logging pattern, all log messages generated during the execution of a request—from the controller to the service and repository layers—are tagged with the same ID. This significantly improves observability and simplifies debugging and log aggregation. They are formatted in JSON so they can be machine-readable and easily queried with something like SumoLogic.
 
 ## 8. Filtering
 **Context**: The API requires startTime and endTime as parameters to the GET /events endpoint.
