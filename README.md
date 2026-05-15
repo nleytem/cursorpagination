@@ -92,7 +92,8 @@ curl "http://localhost:8080/events?startTime=1700000000&endTime=1800000000&tags=
 1.  Make an initial request with `startTime` and `endTime`.
 2.  If the response contains a non-null `next_cursor`, there are more results available.
 3.  To fetch the next page, include the `cursor` value in your next request. **Important:** All filter parameters must remain identical across paginated requests to ensure consistency.
-4.  Pagination is complete when `next_cursor` is `null`.
+    1. `next_cursor` points at the last item returned, so providing it in the subsequent `cursor` query param will return results _after_ the event associated with `next_cursor`.
+5.  Pagination is complete when `next_cursor` is `null`.
 
 ---
 
