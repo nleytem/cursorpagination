@@ -57,3 +57,7 @@
 **Decision**: On startup, the application loads the DB with data from the seed_data.jsonl file
 **Rationale**: This is idempotent (if data exists, nothing is loaded) and ensures that the DB is seeded. This application is meant to be run with the docker-compose file, so if it runs outside of that context (or not under text), it will fail to start. 
 
+## 10. Spring Framework
+**Context**: Application needs to serve REST endpoints and interact with DBs
+**Decision**: Use Spring Boot to help eliminate boilerplate and ease testing and development
+**Rationale**: I have been using Spring for a long time now and it just makes setting up, testing, maintaining, and adding new features so much easier in my experience than "rolling your own."
